@@ -1,12 +1,13 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, Pressable, Text, View } from 'react-native';
 
-type Props = {
+type ButtonProps = {
   label: string;
   onPress: () => void;
   backgroundColor?: string;
 };
 
-export default function Button({ label, onPress, backgroundColor = '#007BFF' }: Props) {
+const Button: React.FC<ButtonProps> = ({ label, onPress, backgroundColor = '#007BFF' }) => {
   return (
     <View style={styles.buttonContainer}>
       <Pressable
@@ -21,32 +22,18 @@ export default function Button({ label, onPress, backgroundColor = '#007BFF' }: 
       </Pressable>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 200,
-    height: 50,
-    marginHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
+    width: '100%',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   button: {
-    borderRadius: 8,
-    width: '100%',
-    height: '100%',
+    backgroundColor: '#007BFF',
+    padding: 15,
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
   },
   buttonPressed: {
     opacity: 0.7,
@@ -55,6 +42,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '500',
-    textTransform: 'uppercase',
   },
 });
+
+export default Button;
