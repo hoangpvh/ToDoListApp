@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store'; 
+import { toggleTodoCompletion } from '@/slice/todoSlice'; 
 
 interface TodoItem {
   id: string;
@@ -9,17 +12,14 @@ interface TodoItem {
 }
 
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<TodoItem[]>([
-    { id: '1', task: 'Buy groceries', completed: false },
-    { id: '2', task: 'Walk the dog', completed: false },
-    { id: '3', task: 'Finish project', completed: false },
-  ]);
+  const todos = useSelector((state: RootState) => state.todos.todos); 
+  const dispatch = useDispatch(); 
 
   const renderTodoItem = ({ item }: { item: TodoItem }) => (
     <View style={styles.todoItem}>
       <CheckBox
         checked={item.completed}
-        onPress={() => toggleTodoCompletion(item.id)}
+        onPress={() => dispatch(toggleTodoCompletion(item.id))} 
         containerStyle={styles.checkbox}
       />
       <Text style={[styles.taskText, item.completed && styles.completedText]}>
@@ -27,14 +27,6 @@ const TodoList: React.FC = () => {
       </Text>
     </View>
   );
-
-  const toggleTodoCompletion = (id: string) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
 
   return (
     <View style={styles.container}>
