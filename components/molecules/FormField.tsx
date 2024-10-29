@@ -1,28 +1,39 @@
-  import React from 'react';
-  import { View, StyleSheet } from 'react-native';
-  import Label from '../atoms/Label';
-  import Input from '../atoms/Input';
+import React from "react";
+import { StyleSheet,View } from "react-native";
 
-  type FormFieldProps = {
-    label: string;
-    value: string;
-    onChangeText: (text: string) => void;
-    secureTextEntry?: boolean;
-  };
+import Input from "../atoms/Input";
+import Label from "../atoms/Label";
 
-  const FormField: React.FC<FormFieldProps> = ({ label, value, onChangeText, secureTextEntry }) => {
-    return (
-      <View style={styles.container}>
-        <Label text={label} />
-        <Input placeholder={label} value={value} onChangeText={onChangeText} secureTextEntry={secureTextEntry} />
-      </View>
-    );
-  };
+type FormFieldProps = {
+  label: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
+};
 
-  const styles = StyleSheet.create({
-    container: {
-      marginBottom: 15,
-    },
-  });
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  value,
+  onChangeText,
+  secureTextEntry,
+}) => {
+  return (
+    <View style={styles.container}>
+      <Label text={label} />
+      <Input
+        placeholder={label}
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
+      />
+    </View>
+  );
+};
 
-  export default FormField;
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 15,
+  },
+});
+
+export default FormField;

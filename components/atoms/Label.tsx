@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 type LabelProps = {
   text: string;
@@ -11,9 +11,9 @@ const Label: React.FC<LabelProps> = ({ text }) => {
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: 5,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
 

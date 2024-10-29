@@ -1,10 +1,14 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
-import TodoList from '../organisms/TodoList';
-import { Provider } from 'react-redux';
-import store from '@/redux/store';
+import React from "react";
+import { SafeAreaView,StyleSheet } from "react-native";
+import { Provider } from "react-redux";
 
-const MainTemplate: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+import store from "@/redux/store";
+
+import TodoList from "../organisms/TodoList";
+
+const MainTemplate: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <SafeAreaView style={styles.container}>
       {children}
@@ -17,8 +21,8 @@ const MainTemplate: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#ffffff",
     flex: 1,
-    backgroundColor: '#ffffff',
   },
 });
 

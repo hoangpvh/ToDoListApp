@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { toggleTodoCompletion, addTodo, editTodo, deleteTodo } from '@/slice/todoSlice';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
+import React, { useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { CheckBox } from "react-native-elements";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootState } from "@/redux/store";
+import {
+  addTodo,
+  deleteTodo,
+  editTodo,
+  toggleTodoCompletion,
+} from "@/slice/todoSlice";
+
+import Button from "../atoms/Button";
+import Input from "../atoms/Input";
 
 interface TodoItem {
   id: string;
@@ -18,7 +31,7 @@ const TodoList: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
 
-  const [task, setTask] = useState('');
+  const [task, setTask] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
 
   const renderTodoItem = ({ item }: { item: TodoItem }) => (
@@ -32,10 +45,16 @@ const TodoList: React.FC = () => {
         {item.task}
       </Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton}>
+        <TouchableOpacity
+          onPress={() => startEdit(item)}
+          style={styles.iconButton}
+        >
           <Icon name="pencil" size={20} color="#4CAF50" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => dispatch(deleteTodo(item.id))} style={styles.iconButton}>
+        <TouchableOpacity
+          onPress={() => dispatch(deleteTodo(item.id))}
+          style={styles.iconButton}
+        >
           <Icon name="trash" size={20} color="#F44336" />
         </TouchableOpacity>
       </View>
@@ -49,12 +68,12 @@ const TodoList: React.FC = () => {
 
   const handleSave = () => {
     if (editId) {
-      dispatch(editTodo({ id: editId, task, completed: false }));
+      dispatch(editTodo({ completed: false, id: editId, task }));
       setEditId(null);
     } else {
-      dispatch(addTodo({ task, completed: false }));
+      dispatch(addTodo({ completed: false, task }));
     }
-    setTask('');
+    setTask("");
   };
 
   return (
@@ -64,13 +83,9 @@ const TodoList: React.FC = () => {
         renderItem={renderTodoItem}
         keyExtractor={(item) => item.id}
       />
-      <Input
-        placeholder="Enter task"
-        value={task}
-        onChangeText={setTask}
-      />
+      <Input placeholder="Enter task" value={task} onChangeText={setTask} />
       <Button
-        label={editId ? 'Update Task' : 'Add Task'}
+        label={editId ? "Update Task" : "Add Task"}
         onPress={handleSave}
       />
     </View>
@@ -78,33 +93,33 @@ const TodoList: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  todoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
+  buttonContainer: {
+    alignItems: "center",
+    flexDirection: "row",
   },
   checkbox: {
     marginRight: 10,
   },
-  taskText: {
-    fontSize: 16,
-    flex: 8,
-  },
   completedText: {
-    textDecorationLine: 'line-through',
-    color: 'gray',
+    color: "gray",
+    textDecorationLine: "line-through",
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  container: {
+    backgroundColor: "#fff",
+    padding: 20,
   },
   iconButton: {
     marginLeft: 10,
     padding: 5,
+  },
+  taskText: {
+    flex: 8,
+    fontSize: 16,
+  },
+  todoItem: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginVertical: 5,
   },
 });
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Pressable, Text, View } from 'react-native';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type ButtonProps = {
   label: string;
@@ -7,7 +7,11 @@ type ButtonProps = {
   backgroundColor?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ label, onPress, backgroundColor = '#007BFF' }) => {
+const Button: React.FC<ButtonProps> = ({
+  label,
+  onPress,
+  backgroundColor = "#007BFF",
+}) => {
   return (
     <View style={styles.buttonContainer}>
       <Pressable
@@ -25,23 +29,23 @@ const Button: React.FC<ButtonProps> = ({ label, onPress, backgroundColor = '#007
 };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    width: '100%',
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
   button: {
-    backgroundColor: '#007BFF',
+    alignItems: "center",
+    backgroundColor: "#007BFF",
     padding: 15,
-    alignItems: 'center',
+  },
+  buttonContainer: {
+    borderRadius: 8,
+    overflow: "hidden",
+    width: "100%",
+  },
+  buttonLabel: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "500",
   },
   buttonPressed: {
     opacity: 0.7,
-  },
-  buttonLabel: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
   },
 });
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
 
 type InputProps = {
   placeholder: string;
@@ -8,7 +8,12 @@ type InputProps = {
   secureTextEntry?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ placeholder, value, onChangeText, secureTextEntry }) => {
+const Input: React.FC<InputProps> = ({
+  placeholder,
+  value,
+  onChangeText,
+  secureTextEntry,
+}) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -24,16 +29,16 @@ const Input: React.FC<InputProps> = ({ placeholder, value, onChangeText, secureT
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    width: '100%',
-    marginBottom: 15,
-  },
   input: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
+    borderColor: "#ccc",
     borderRadius: 8,
+    borderWidth: 1,
+    height: 50,
     paddingHorizontal: 10,
+  },
+  inputContainer: {
+    marginBottom: 15,
+    width: "100%",
   },
 });
 

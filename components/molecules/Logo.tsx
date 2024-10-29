@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import React from "react";
+import { Image,StyleSheet, View } from "react-native";
 
-const PlaceholderImage = require('@/assets/images/background-image.png');
+const PlaceholderImage = require("@/assets/images/background-image.png");
 
 const Logo = () => (
   <View style={styles.container}>
@@ -13,22 +13,22 @@ export default Logo;
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
+    alignSelf: "center",
+    backgroundColor: "#fff",
+    borderRadius: 75,
+    elevation: 8,
     height: 150,
-    borderRadius: 75, 
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    justifyContent: "center",
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    elevation: 8, 
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignSelf:'center'
+    width: 150,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    height: "100%",
+    resizeMode: "cover",
+    width: "100%",
   },
 });

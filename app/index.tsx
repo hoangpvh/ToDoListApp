@@ -1,10 +1,9 @@
-import React from 'react';
-import AuthTemplate from '../components/templates/AuthTemplate';
+import React from "react";
+
+import AuthTemplate from "../components/templates/AuthTemplate";
 
 const Index = () => {
-  return (
-    <AuthTemplate />
-  );
+  return <AuthTemplate />;
 };
 
 export default Index;
