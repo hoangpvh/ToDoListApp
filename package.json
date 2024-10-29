@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --max-warnings 0 && tsc --noEmit ",
     "prepare": "husky"
   },
   "jest": {

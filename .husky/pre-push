@@ -1,0 +1,8 @@
+# chưa fix dc file test 
+# ==>npm run test:diff
+
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "Không thể push code lên."
+  exit 1
+fi
