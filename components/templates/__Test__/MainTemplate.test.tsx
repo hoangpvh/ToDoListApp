@@ -12,7 +12,7 @@ jest.mock("@/components/organisms/TodoList", () => {
 
 describe("MainTemplate Component", () => {
   it("renders TodoList", () => {
-    const { getByTestId } = render(<MainTemplate />);
+    // const { getByTestId } = render(<MainTemplate />);
 
     expect(TodoList).toHaveBeenCalled();
   });

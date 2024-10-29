@@ -1,4 +1,4 @@
-import { fireEvent,render } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import React from "react";
 
 import TodoList from "../TodoList";
@@ -23,7 +23,7 @@ describe("TodoList Component", () => {
     );
 
     // Sử dụng toán tử optional chaining để đảm bảo parent không null
-    const checkboxParent = taskToToggle.parent?.parent;
+    // const checkboxParent = taskToToggle.parent?.parent;
 
     // if (checkboxParent) {
     //   // Tìm CheckBox cha và nhấn vào nó

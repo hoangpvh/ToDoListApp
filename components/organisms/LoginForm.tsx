@@ -1,6 +1,6 @@
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import React, { useState } from "react";
-import { Alert,StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import Button from "../atoms/Button";
 import FormField from "../molecules/FormField";

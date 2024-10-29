@@ -12,7 +12,7 @@ jest.mock("@/components/organisms/LoginForm", () => {
 
 describe("AuthTemplate Component", () => {
   it("renders LoginForm", () => {
-    const { getByTestId } = render(<AuthTemplate />);
+    // const { getByTestId } = render(<AuthTemplate />);
 
     expect(LoginForm).toHaveBeenCalled();
   });

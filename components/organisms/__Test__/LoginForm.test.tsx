@@ -1,7 +1,6 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import React from "react";
-import { Alert } from "react-native";
 
 import LoginForm from "../LoginForm";
 

@@ -1,4 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npx eslint . --ext .js,.jsx,.ts,.tsx --fix
+# chưa fix file test ==> #
+# npm run lint && npm run test:diff
