@@ -1,5 +1,5 @@
-// redux/todoSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Alert } from "react-native";
 
 interface TodoItem {
   id: string;
@@ -24,6 +24,13 @@ const todoSlice = createSlice({
   name: "todos",
   reducers: {
     addTodo(state, action: PayloadAction<Omit<TodoItem, "id">>) {
+      const task = action.payload.task;
+      if (!task.trim()) {
+        Alert.alert("Thông báo", "Bạn không thể thêm một todo trống!", [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+        return;
+      }
       const newTodo = { id: Date.now().toString(), ...action.payload };
       state.todos.push(newTodo);
     },
