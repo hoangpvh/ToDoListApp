@@ -17,9 +17,8 @@ import {
   editTodo,
   toggleTodoCompletion,
 } from "@/slice/todoSlice";
-
-import Button from "../atoms/Button";
-import Input from "../atoms/Input";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 
 interface TodoItem {
   id: string;

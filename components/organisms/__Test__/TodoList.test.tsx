@@ -1,42 +1,94 @@
-import { render } from "@testing-library/react-native";
 import React from "react";
+import { render, fireEvent } from "@testing-library/react-native";
+import configureMockStore from "redux-mock-store";
+import { Provider } from "react-redux";
 
-import TodoList from "../TodoList";
+import { addTodo, deleteTodo, editTodo, toggleTodoCompletion } from "@/slice/todoSlice";
+import TodoList from "@/components/organisms/TodoList";
+
+const mockStore = configureMockStore();
+const store = mockStore({
+  todos: { todos: [{ id: "1", task: "Sample Task", completed: false }] },
+});
 
 describe("TodoList Component", () => {
-  it("renders todo items correctly", () => {
-    const { getByText } = render(<TodoList />);
-
-    expect(getByText("Buy groceries")).toBeTruthy();
-    expect(getByText("Walk the dog")).toBeTruthy();
-    expect(getByText("Finish project")).toBeTruthy();
+  beforeEach(() => {
+    store.clearActions();
   });
 
-  it("toggles todo completion when checkbox is pressed", () => {
-    const { getByText } = render(<TodoList />);
-
-    const taskToToggle = getByText("Buy groceries");
-
-    // Kiểm tra rằng task chưa được hoàn thành
-    expect(taskToToggle.props.style).not.toEqual(
-      expect.arrayContaining([{ textDecorationLine: "line-through" }]),
+  it("renders the todo list and input field", () => {
+    const { getByPlaceholderText, getByText } = render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
     );
 
-    // Sử dụng toán tử optional chaining để đảm bảo parent không null
-    // const checkboxParent = taskToToggle.parent?.parent;
+    expect(getByPlaceholderText("Enter task")).toBeTruthy();
+    expect(getByText("Sample Task")).toBeTruthy();
+  });
 
-    // if (checkboxParent) {
-    //   // Tìm CheckBox cha và nhấn vào nó
-    //   fireEvent.press(checkboxParent);
+  it("adds a new todo when the add button is pressed", () => {
+    const { getByPlaceholderText, getByText } = render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
 
-    //   // Kiểm tra rằng task đã được đánh dấu hoàn thành
-    //   expect(taskToToggle.props.style).toEqual(expect.arrayContaining([{ textDecorationLine: 'line-through' }]));
+    const input = getByPlaceholderText("Enter task");
+    fireEvent.changeText(input, "New Task");
 
-    //   // Nhấn lại vào CheckBox để hoàn tác
-    //   fireEvent.press(checkboxParent);
+    const addButton = getByText("Add Task");
+    fireEvent.press(addButton);
 
-    //   // Kiểm tra rằng task chưa được hoàn thành
-    //   expect(taskToToggle.props.style).not.toEqual(expect.arrayContaining([{ textDecorationLine: 'line-through' }]));
-    // }
+    const actions = store.getActions();
+    expect(actions).toContainEqual(addTodo({ completed: false, task: "New Task" }));
+  });
+
+  it("deletes a todo when the delete button is pressed", () => {
+    const { getByText, getAllByTestId } = render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
+
+    const deleteButton = getAllByTestId("delete-button")[0];
+    fireEvent.press(deleteButton);
+
+    const actions = store.getActions();
+    expect(actions).toContainEqual(deleteTodo("1"));
+  });
+
+  it("toggles todo completion when the checkbox is pressed", () => {
+    const { getAllByTestId } = render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
+
+    const checkbox = getAllByTestId("checkbox")[0];
+    fireEvent.press(checkbox);
+
+    const actions = store.getActions();
+    expect(actions).toContainEqual(toggleTodoCompletion("1"));
+  });
+
+  it("edits a todo when the edit button is pressed", () => {
+    const { getByPlaceholderText, getByText, getAllByTestId } = render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
+
+    const editButton = getAllByTestId("edit-button")[0];
+    fireEvent.press(editButton);
+
+    const input = getByPlaceholderText("Enter task");
+    fireEvent.changeText(input, "Edited Task");
+
+    const updateButton = getByText("Update Task");
+    fireEvent.press(updateButton);
+
+    const actions = store.getActions();
+    expect(actions).toContainEqual(editTodo({ id: "1", task: "Edited Task", completed: false }));
   });
 });

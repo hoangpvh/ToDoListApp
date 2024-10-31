@@ -1,8 +1,7 @@
+import LoginForm from "@/components/organisms/LoginForm";
 import { fireEvent, render } from "@testing-library/react-native";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import React from "react";
-
-import LoginForm from "../LoginForm";
 
 jest.mock("expo-router/build/global-state/router-store", () => ({
   useExpoRouter: jest.fn(),

@@ -1,10 +1,9 @@
+import Button from "@/components/atoms/Button";
+import FormField from "@/components/molecules/FormField";
+import Logo from "@/components/molecules/Logo";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-
-import Button from "../atoms/Button";
-import FormField from "../molecules/FormField";
-import Logo from "../molecules/Logo";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");

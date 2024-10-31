@@ -3,8 +3,7 @@ import React from "react";
 import { Text } from "react-native";
 
 import LoginForm from "@/components/organisms/LoginForm";
-
-import AuthTemplate from "../AuthTemplate";
+import AuthTemplate from "@/components/templates/AuthTemplate";
 
 jest.mock("@/components/organisms/LoginForm", () => {
   return jest.fn(() => <></>); // Mock LoginForm component

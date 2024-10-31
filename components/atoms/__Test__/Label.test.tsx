@@ -1,7 +1,6 @@
+import Label from "@/components/atoms/Label";
 import { render } from "@testing-library/react-native";
 import React from "react";
-
-import Label from "../Label";
 
 describe("Label Component", () => {
   it("renders with the correct text", () => {

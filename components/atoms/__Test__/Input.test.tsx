@@ -1,7 +1,6 @@
+import Input from "@/components/atoms/Input";
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-
-import Input from "../Input";
 
 describe("Input Component", () => {
   test("renders with correct placeholder", () => {

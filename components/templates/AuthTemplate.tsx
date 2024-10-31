@@ -1,7 +1,6 @@
+import LoginForm from "@/components/organisms/LoginForm";
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-
-import LoginForm from "../organisms/LoginForm";
 
 const AuthTemplate: React.FC<{ children?: React.ReactNode }> = ({
   children,

@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import Input from "../atoms/Input";
-import Label from "../atoms/Label";
+import Label from "@/components/atoms/Label";
+import Input from "@/components/atoms/Input";
 
 type FormFieldProps = {
   label: string;

@@ -3,8 +3,7 @@ import React from "react";
 import { Text } from "react-native";
 
 import TodoList from "@/components/organisms/TodoList";
-
-import MainTemplate from "../MainTemplate";
+import MainTemplate from "@/components/templates/MainTemplate";
 
 jest.mock("@/components/organisms/TodoList", () => {
   return jest.fn(() => <></>); // Mock TodoList component

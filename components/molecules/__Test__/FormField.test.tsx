@@ -1,7 +1,6 @@
+import FormField from "@/components/molecules/FormField";
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-
-import FormField from "../FormField";
 
 describe("FormField Component", () => {
   it("renders the label and input with correct props", () => {
