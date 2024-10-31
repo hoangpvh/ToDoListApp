@@ -15,11 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <View style={styles.buttonContainer}>
       <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          { backgroundColor },
-          pressed && styles.buttonPressed,
-        ]}
+        style={({ pressed }) => [styles.button, { backgroundColor }]}
         onPress={onPress}
       >
         <Text style={styles.buttonLabel}>{label}</Text>
@@ -43,9 +39,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "500",
-  },
-  buttonPressed: {
-    opacity: 0.7,
   },
 });
 
