@@ -1,4 +1,4 @@
-import Button from "@/components/atoms/Button";
+import Button from "@/components/atoms/AddButton";
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Alert } from "react-native";
 
@@ -12,11 +13,7 @@ interface TodoState {
 }
 
 const initialState: TodoState = {
-  todos: [
-    { completed: false, id: "1", task: "Buy groceries" },
-    { completed: false, id: "2", task: "Walk the dog" },
-    { completed: false, id: "3", task: "Finish project" },
-  ],
+  todos: [],
 };
 
 const todoSlice = createSlice({
@@ -51,9 +48,23 @@ const todoSlice = createSlice({
         todo.completed = !todo.completed;
       }
     },
+    clearTodos: (state) => {
+      state.todos = [];
+      AsyncStorage.removeItem("todos");
+    },
+    setTodos(state, action: PayloadAction<TodoItem[]>) {
+      state.todos = action.payload;
+    },
   },
 });
 
-export const { toggleTodoCompletion, addTodo, editTodo, deleteTodo } =
-  todoSlice.actions;
+export const {
+  toggleTodoCompletion,
+  addTodo,
+  editTodo,
+  deleteTodo,
+  clearTodos,
+  setTodos, 
+} = todoSlice.actions;
+
 export default todoSlice.reducer;

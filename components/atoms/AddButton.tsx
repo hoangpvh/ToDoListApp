@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <View style={styles.buttonContainer}>
       <Pressable
-        style={({ pressed }) => [styles.button, { backgroundColor }]}
+        style={[styles.button, { backgroundColor }]}
         onPress={onPress}
       >
         <Text style={styles.buttonLabel}>{label}</Text>
@@ -27,7 +27,6 @@ const Button: React.FC<ButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "#007BFF",
     padding: 15,
   },
   buttonContainer: {
