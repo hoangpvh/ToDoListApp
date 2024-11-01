@@ -2,12 +2,9 @@ import LoginForm from "@/components/organisms/LoginForm";
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 
-const AuthTemplate: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+const AuthTemplate: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
-      {children}
       <LoginForm />
     </SafeAreaView>
   );

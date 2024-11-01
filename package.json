@@ -8,7 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "eslint . --fix",
     "check-types": "tsc --noEmit 2>&1 | grep -c 'error' | xargs -I {} sh -c 'if [ {} -gt 1 ]; then exit 1; fi'",
     "prepare": "husky"
@@ -33,6 +33,7 @@
     "react-native": "0.74.5",
     "react-native-elements": "^3.4.3",
     "react-native-safe-area-context": "^4.12.0",
+    "react-native-screens": "^3.35.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.10",
     "react-redux": "^9.1.2"

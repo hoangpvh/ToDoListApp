@@ -1,6 +1,5 @@
 import React from "react";
-
-import MainTemplate from "../components/templates/MainTemplate";
+import MainTemplate from "@/components/templates/MainTemplate";
 
 const TodoList = () => {
   return <MainTemplate />;

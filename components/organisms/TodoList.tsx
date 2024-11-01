@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     padding: 20,
+    height: "55%",
+    justifyContent: "space-between",
   },
   iconButton: {
     marginLeft: 10,
