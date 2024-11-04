@@ -36,7 +36,7 @@ const LoginForm = () => {
     const userData = { email, password };
     try {
       await AsyncStorage.setItem('user', JSON.stringify(userData));
-    } catch (error) {}
+    } catch (error) { }
 
     router.push("todolist");
   };

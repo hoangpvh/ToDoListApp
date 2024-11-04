@@ -6,22 +6,22 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  TextInput,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { RootState } from "@/redux/store";
+import { RootState } from "@/redux/Store";
 import {
   addTodo,
   deleteTodo,
   editTodo,
   toggleTodoCompletion,
-  setTodos, // Assuming you have this action to set todos
-} from "@/slice/todoSlice";
-import Input from "@/components/atoms/Input";
-import AddButton from "@/components/atoms/AddButton";
+  setTodos,
+} from "@/slice/TodoSlice";
+import AddButton from "@/components/atoms/ButtonAdd";
 
 interface TodoItem {
   id: string;
@@ -36,23 +36,19 @@ const TodoList: React.FC = () => {
   const [task, setTask] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
 
-  // Load todos from AsyncStorage when component mounts
   useEffect(() => {
     const loadTodos = async () => {
       try {
         const storedTodos = await AsyncStorage.getItem('todos');
         if (storedTodos) {
-          dispatch(setTodos(JSON.parse(storedTodos))); // Set todos in Redux store
+          dispatch(setTodos(JSON.parse(storedTodos)));
         }
-      } catch (error) {
-        console.error('Failed to load todos', error);
-      }
+      } catch (error) {}
     };
 
     loadTodos();
   }, [dispatch]);
 
-  // Render each todo item
   const renderTodoItem = ({ item }: { item: TodoItem }) => (
     <View style={styles.todoItem}>
       <CheckBox
@@ -60,15 +56,13 @@ const TodoList: React.FC = () => {
         onPress={() => dispatch(toggleTodoCompletion(item.id))}
         containerStyle={styles.checkbox}
       />
-      <Text style={[styles.taskText, item.completed && styles.completedText]}>
-        {item.task}
-      </Text>
+      <Text style={styles.taskText}>{item.task}</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton}>
-          <Icon name="pencil" size={20} color="#4CAF50" />
+        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton} testID={`edit-button-${item.id}`} >
+          <Icon name="edit" size={20} color="#4CAF50" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => confirmDelete(item.id)} style={styles.iconButton}>
-          <Icon name="trash" size={20} color="#F44336" />
+          <Icon name="delete" size={20} color="#F44336" />
         </TouchableOpacity>
       </View>
     </View>
@@ -81,25 +75,25 @@ const TodoList: React.FC = () => {
 
   const handleSave = async () => {
     if (editId) {
-      dispatch(editTodo({ completed: false, id: editId, task }));
-      setEditId(null);
+      const updatedTodo = { id: editId, task, completed: false };
+      dispatch(editTodo(updatedTodo));
     } else {
-      dispatch(addTodo({ completed: false, task }));
+      const newTodo = { id: Date.now().toString(), task, completed: false };
+      dispatch(addTodo(newTodo));
     }
-
-    // Persist updated todos to AsyncStorage
     await saveTodosToStorage();
     setTask("");
+    setEditId(null);
   };
 
   const saveTodosToStorage = async () => {
     try {
       const todosToStore = await AsyncStorage.getItem('todos');
-      const updatedTodos = todosToStore ? [...JSON.parse(todosToStore), { id: editId || Date.now().toString(), task, completed: false }] : [{ id: Date.now().toString(), task, completed: false }];
+      const updatedTodos = todosToStore ?
+        [...JSON.parse(todosToStore), { id: editId || Date.now().toString(), task, completed: false }] :
+        [{ id: Date.now().toString(), task, completed: false }];
       await AsyncStorage.setItem('todos', JSON.stringify(updatedTodos));
-    } catch (error) {
-      console.error('Failed to save todos', error);
-    }
+    } catch (error) {}
   };
 
   const confirmDelete = (id: string) => {
@@ -113,16 +107,17 @@ const TodoList: React.FC = () => {
         },
         {
           text: "Delete",
-          onPress: () => {
-            dispatch(deleteTodo(id));
-            // Also update AsyncStorage
-            saveTodosToStorage();
-          },
+          onPress: () => handleDelete(id),
           style: "destructive",
         },
       ],
       { cancelable: true }
     );
+  };
+
+  const handleDelete = async (id: string) => {
+    dispatch(deleteTodo(id));
+    await saveTodosToStorage();
   };
 
   return (
@@ -132,7 +127,12 @@ const TodoList: React.FC = () => {
         renderItem={renderTodoItem}
         keyExtractor={(item) => item.id}
       />
-      <Input placeholder="Enter task" value={task} onChangeText={setTask} />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter task"
+        value={task}
+        onChangeText={setTask}
+      />
       <AddButton
         label={editId ? "Update Task" : "Add Task"}
         onPress={handleSave}
@@ -149,10 +149,6 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 10,
-  },
-  completedText: {
-    color: "gray",
-    textDecorationLine: "line-through",
   },
   container: {
     backgroundColor: "#fff",
@@ -173,27 +169,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 5,
   },
+  input: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    fontSize: 16,
+    backgroundColor: "#fff",
+  },
 });
 
 export default TodoList;
-
-
-
-// const confirmDelete = (id: string) => {
-  //   Alert.alert(
-  //     "Confirm Deletion",
-  //     "Are you sure you want to delete this todo?",
-  //     [
-  //       {
-  //         text: "Cancel",
-  //         style: "cancel",
-  //       },
-  //       {
-  //         text: "Delete",
-  //         onPress: () => dispatch(deleteTodo(id)), 
-  //         style: "destructive",
-  //       },
-  //     ],
-  //     { cancelable: true }
-  //   );
-  // };

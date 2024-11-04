@@ -2,17 +2,17 @@ import React from "react";
 import { Pressable, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useDispatch } from "react-redux"; 
-import { clearTodos } from "@/slice/todoSlice"; 
+import { useDispatch } from "react-redux";
+import { clearTodos } from "@/slice/TodoSlice";
 
 const ButtonLogout: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("user");
-      dispatch(clearTodos()); 
+      dispatch(clearTodos());
       router.push("/");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -22,10 +22,7 @@ const ButtonLogout: React.FC = () => {
   return (
     <Pressable
       onPress={handleLogout}
-      style={({ pressed }) => [
-        styles.logoutButton,
-        pressed && styles.pressed,
-      ]}
+      style={styles.logoutButton}
     >
       <Text style={styles.logoutButtonText}>Logout</Text>
     </Pressable>
@@ -45,9 +42,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
-  },
-  pressed: {
-    opacity: 0.7,
   },
 });
 

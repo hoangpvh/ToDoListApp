@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: "hidden",
     width: "100%",
+    marginTop: 12
   },
   buttonLabel: {
     color: "#FFFFFF",

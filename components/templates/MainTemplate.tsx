@@ -1,14 +1,14 @@
 import React from "react";
-import { Button, SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 
-import store from "@/redux/store";
+import store from "@/redux/Store";
 import TodoList from "@/components/organisms/TodoList";
 import ButtonLogout from "@/components/atoms/ButtonLogout";
 
 const MainTemplate: React.FC = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} testID="main-template-container">
       <Provider store={store}>
         <TodoList />
         <ButtonLogout />

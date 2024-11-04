@@ -24,7 +24,7 @@ const todoSlice = createSlice({
       const task = action.payload.task;
       if (!task.trim()) {
         Alert.alert("Thông báo", "Bạn không thể thêm một todo trống!", [
-          { text: "OK", onPress: () => console.log("OK Pressed") },
+          { text: "OK" },
         ]);
         return;
       }
@@ -64,7 +64,7 @@ export const {
   editTodo,
   deleteTodo,
   clearTodos,
-  setTodos, 
+  setTodos,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;

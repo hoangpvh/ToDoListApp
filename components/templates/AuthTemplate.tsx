@@ -1,11 +1,14 @@
 import LoginForm from "@/components/organisms/LoginForm";
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 
 const AuthTemplate: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <LoginForm />
+      <View>
+        <Text></Text>
+        <LoginForm />
+      </View>
     </SafeAreaView>
   );
 };

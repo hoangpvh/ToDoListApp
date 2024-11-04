@@ -4,8 +4,8 @@ import { Image, StyleSheet, View } from "react-native";
 const PlaceholderImage = require("@/assets/images/background-image.png");
 
 const Logo = () => (
-  <View style={styles.container}>
-    <Image style={styles.image} source={PlaceholderImage} />
+  <View style={styles.container} testID="container">
+    <Image style={styles.image} source={PlaceholderImage} testID="image" />
   </View>
 );
 
