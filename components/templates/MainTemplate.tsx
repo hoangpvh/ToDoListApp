@@ -3,15 +3,14 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 
 import store from "@/redux/Store";
-import TodoList from "@/components/organisms/TodoList";
-import ButtonLogout from "@/components/atoms/ButtonLogout";
+import ButtonLogout from "@/components/atoms/ButtonLogout"; 
 
-const MainTemplate: React.FC = () => {
+const MainTemplate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <SafeAreaView style={styles.container} testID="main-template-container">
+    <SafeAreaView style={styles.container}>
       <Provider store={store}>
-        <TodoList />
-        <ButtonLogout />
+        {children} 
+        <ButtonLogout /> 
       </Provider>
     </SafeAreaView>
   );
@@ -19,10 +18,16 @@ const MainTemplate: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f0f0f0",
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center", 
+    padding: 16,
+  },
+  content: {
+    flex: 1, 
+    justifyContent: "flex-start", 
+    width: "100%", 
+    maxWidth: 600, 
   },
 });
 
