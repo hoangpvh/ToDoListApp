@@ -5,9 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Alert,
   TextInput,
-  Button,
   Pressable,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
@@ -23,7 +21,6 @@ import {
   toggleTodoCompletion,
   setTodos,
 } from "@/slice/TodoSlice";
-
 
 interface TodoItem {
   id: string;
@@ -45,17 +42,33 @@ const TodoList: React.FC = () => {
         if (storedTodos) {
           dispatch(setTodos(JSON.parse(storedTodos)));
         }
-      } catch (error) { }
+      } catch (error) {
+        console.error('Failed to load todos', error);
+      }
     };
 
     loadTodos();
   }, [dispatch]);
 
+  const saveTodosToStorage = async (todosToSave: TodoItem[]) => {
+    try {
+      await AsyncStorage.setItem('todos', JSON.stringify(todosToSave));
+    } catch (error) {
+      console.error('Failed to save todos', error);
+    }
+  };
+
   const renderTodoItem = ({ item }: { item: TodoItem }) => (
     <View style={styles.todoItem}>
       <CheckBox
         checked={item.completed}
-        onPress={() => dispatch(toggleTodoCompletion(item.id))}
+        onPress={() => {
+          dispatch(toggleTodoCompletion(item.id));
+          saveTodosToStorage(todos.map(todo => ({
+            ...todo,
+            completed: todo.id === item.id ? !todo.completed : todo.completed
+          })));
+        }}
         containerStyle={styles.checkbox}
       />
       <Text style={styles.taskText}>{item.task}</Text>
@@ -76,38 +89,34 @@ const TodoList: React.FC = () => {
   };
 
   const handleSave = async () => {
+    let updatedTodos;
+
     if (editId) {
       const updatedTodo = { id: editId, task, completed: false };
       dispatch(editTodo(updatedTodo));
+      updatedTodos = todos.map(todo => (todo.id === editId ? updatedTodo : todo));
     } else {
       const newTodo = { id: Date.now().toString(), task, completed: false };
       dispatch(addTodo(newTodo));
+      updatedTodos = [...todos, newTodo];
     }
-    await saveTodosToStorage();
+
+    await saveTodosToStorage(updatedTodos);
     setTask("");
     setEditId(null);
-  };
-
-  const saveTodosToStorage = async () => {
-    try {
-      const todosToStore = await AsyncStorage.getItem('todos');
-      const updatedTodos = todosToStore ?
-        [...JSON.parse(todosToStore), { id: editId || Date.now().toString(), task, completed: false }] :
-        [{ id: Date.now().toString(), task, completed: false }];
-      await AsyncStorage.setItem('todos', JSON.stringify(updatedTodos));
-    } catch (error) { }
   };
 
   const confirmDelete = (id: string) => {
     const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa todo này không?");
     if (isConfirmed) {
-      dispatch(deleteTodo(id));
+      handleDelete(id);
     }
   };
 
   const handleDelete = async (id: string) => {
     dispatch(deleteTodo(id));
-    await saveTodosToStorage();
+    const updatedTodos = todos.filter(todo => todo.id !== id);
+    await saveTodosToStorage(updatedTodos);
   };
 
   return (
@@ -145,7 +154,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
-    height: "55%",
+    height: 600,
     width: 400,
     justifyContent: "center",
   },
@@ -186,8 +195,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: "hidden",
     width: "100%",
-    marginTop: 12
-  }
+    marginTop: 12,
+  },
 });
 
 export default TodoList;
