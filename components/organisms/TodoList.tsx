@@ -7,6 +7,8 @@ import {
   View,
   Alert,
   TextInput,
+  Button,
+  Pressable,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -21,7 +23,7 @@ import {
   toggleTodoCompletion,
   setTodos,
 } from "@/slice/TodoSlice";
-import AddButton from "@/components/atoms/ButtonAdd";
+
 
 interface TodoItem {
   id: string;
@@ -43,7 +45,7 @@ const TodoList: React.FC = () => {
         if (storedTodos) {
           dispatch(setTodos(JSON.parse(storedTodos)));
         }
-      } catch (error) {}
+      } catch (error) { }
     };
 
     loadTodos();
@@ -58,11 +60,11 @@ const TodoList: React.FC = () => {
       />
       <Text style={styles.taskText}>{item.task}</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton} testID={`edit-button-${item.id}`} >
-          <Icon name="edit" size={20} color="#4CAF50" />
+        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton}>
+          <Icon name="pencil" size={20} color="#4CAF50" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => confirmDelete(item.id)} style={styles.iconButton}>
-          <Icon name="delete" size={20} color="#F44336" />
+          <Icon name="trash" size={20} color="#F44336" />
         </TouchableOpacity>
       </View>
     </View>
@@ -93,26 +95,14 @@ const TodoList: React.FC = () => {
         [...JSON.parse(todosToStore), { id: editId || Date.now().toString(), task, completed: false }] :
         [{ id: Date.now().toString(), task, completed: false }];
       await AsyncStorage.setItem('todos', JSON.stringify(updatedTodos));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const confirmDelete = (id: string) => {
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this todo?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => handleDelete(id),
-          style: "destructive",
-        },
-      ],
-      { cancelable: true }
-    );
+    const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa todo này không?");
+    if (isConfirmed) {
+      dispatch(deleteTodo(id));
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -133,11 +123,14 @@ const TodoList: React.FC = () => {
         value={task}
         onChangeText={setTask}
       />
-      <AddButton
-        label={editId ? "Update Task" : "Add Task"}
-        onPress={handleSave}
-        backgroundColor={editId ? "green" : "#007BFF"}
-      />
+      <View style={styles.buttonSubmit}>
+        <Pressable
+          style={[styles.button, { backgroundColor: editId ? "green" : "#FF5722" }]}
+          onPress={handleSave}
+        >
+          <Text style={styles.buttonLabel}>{editId ? "Update Task" : "Add Task"}</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -151,10 +144,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   container: {
-    backgroundColor: "#fff",
     padding: 20,
     height: "55%",
-    justifyContent: "space-between",
+    width: 400,
+    justifyContent: "center",
   },
   iconButton: {
     marginLeft: 10,
@@ -178,6 +171,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: "#fff",
   },
+  button: {
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#FF5722",
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  buttonSubmit: {
+    borderRadius: 8,
+    overflow: "hidden",
+    width: "100%",
+    marginTop: 12
+  }
 });
 
 export default TodoList;
