@@ -1,0 +1,3 @@
+yarn lint
+yarn check-types
+yarn test
