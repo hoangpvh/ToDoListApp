@@ -1,6 +1,5 @@
-import Label from "@/components/atoms/Label";
 import React from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput, Text } from "react-native";
 
 type FormFieldProps = {
   label: string;
@@ -17,7 +16,7 @@ const FormField: React.FC<FormFieldProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Label text={label} />
+      <Text style={styles.label}>{label}</Text>
       <TextInput
         placeholder={label}
         value={value}
@@ -42,6 +41,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontSize: 16,
     backgroundColor: "#fff",
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
 

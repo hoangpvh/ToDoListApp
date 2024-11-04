@@ -19,9 +19,10 @@ const MainTemplate: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f0f0f0",
     flex: 1,
     justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

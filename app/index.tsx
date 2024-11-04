@@ -1,8 +1,8 @@
 import React from "react";
-import AuthTemplate from "@/components/templates/AuthTemplate";
+import LoginForm from "@/components/organisms/LoginForm";
 
 const Index = () => {
-  return <AuthTemplate />;
+  return <LoginForm />;
 };
 
 export default Index;
