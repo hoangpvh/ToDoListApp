@@ -1,26 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  Pressable,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
-import Icon from "react-native-vector-icons/Ionicons";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { FlatList, TextInput, Pressable, View, Text, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { RootState } from "@/redux/Store";
-import {
-  addTodo,
-  deleteTodo,
-  editTodo,
-  toggleTodoCompletion,
-  setTodos,
-} from "@/slice/TodoSlice";
+import { RootState } from '@/redux/Store';
+import { addTodo, deleteTodo, editTodo, toggleTodoCompletion, setTodos } from '@/slice/TodoSlice';
+import TodoItem from '@/components/molecules/TodoItem';
 
 interface TodoItem {
   id: string;
@@ -32,7 +17,7 @@ const TodoList: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
 
-  const [task, setTask] = useState("");
+  const [task, setTask] = useState('');
   const [editId, setEditId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -58,39 +43,27 @@ const TodoList: React.FC = () => {
     }
   };
 
-  const renderTodoItem = ({ item }: { item: TodoItem }) => (
-    <View style={styles.todoItem}>
-      <CheckBox
-        checked={item.completed}
-        onPress={() => {
-          dispatch(toggleTodoCompletion(item.id));
-          saveTodosToStorage(todos.map(todo => ({
-            ...todo,
-            completed: todo.id === item.id ? !todo.completed : todo.completed
-          })));
-        }}
-        containerStyle={styles.checkbox}
-      />
-      <Text style={styles.taskText}>{item.task}</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => startEdit(item)} style={styles.iconButton}>
-          <Icon name="pencil" size={20} color="#4CAF50" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => confirmDelete(item.id)} style={styles.iconButton}>
-          <Icon name="trash" size={20} color="#F44336" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const handleToggleCompletion = (id: string) => {
+    dispatch(toggleTodoCompletion(id));
+    saveTodosToStorage(todos.map(todo => ({
+      ...todo,
+      completed: todo.id === id ? !todo.completed : todo.completed,
+    })));
+  };
 
-  const startEdit = (item: TodoItem) => {
+  const handleEdit = (item: TodoItem) => {
     setEditId(item.id);
     setTask(item.task);
   };
 
+  const handleDelete = async (id: string) => {
+    dispatch(deleteTodo(id));
+    const updatedTodos = todos.filter(todo => todo.id !== id);
+    await saveTodosToStorage(updatedTodos);
+  };
+
   const handleSave = async () => {
     let updatedTodos;
-
     if (editId) {
       const updatedTodo = { id: editId, task, completed: false };
       dispatch(editTodo(updatedTodo));
@@ -100,30 +73,23 @@ const TodoList: React.FC = () => {
       dispatch(addTodo(newTodo));
       updatedTodos = [...todos, newTodo];
     }
-
     await saveTodosToStorage(updatedTodos);
-    setTask("");
+    setTask('');
     setEditId(null);
-  };
-
-  const confirmDelete = (id: string) => {
-    const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa todo này không?");
-    if (isConfirmed) {
-      handleDelete(id);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    dispatch(deleteTodo(id));
-    const updatedTodos = todos.filter(todo => todo.id !== id);
-    await saveTodosToStorage(updatedTodos);
   };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={todos}
-        renderItem={renderTodoItem}
+        renderItem={({ item }) => (
+          <TodoItem
+            item={item}
+            onToggleCompletion={handleToggleCompletion}
+            onEdit={handleEdit} // This can be simplified
+            onDelete={handleDelete}
+          />
+        )}
         keyExtractor={(item) => item.id}
       />
       <TextInput
@@ -134,68 +100,49 @@ const TodoList: React.FC = () => {
       />
       <View style={styles.buttonSubmit}>
         <Pressable
-          style={[styles.button, { backgroundColor: editId ? "green" : "#FF5722" }]}
+          style={[styles.button, { backgroundColor: editId ? 'green' : '#FF5722' }]}
           onPress={handleSave}
         >
-          <Text style={styles.buttonLabel}>{editId ? "Update Task" : "Add Task"}</Text>
+          <Text style={styles.buttonLabel}>{editId ? 'Update Task' : 'Add Task'}</Text>
         </Pressable>
       </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  checkbox: {
-    marginRight: 10,
-  },
   container: {
     padding: 20,
     height: 600,
     width: 400,
-    justifyContent: "center",
-  },
-  iconButton: {
-    marginLeft: 10,
-    padding: 5,
-  },
-  taskText: {
-    flex: 8,
-    fontSize: 16,
-  },
-  todoItem: {
-    alignItems: "center",
-    flexDirection: "row",
-    marginVertical: 5,
+    justifyContent: 'center',
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     fontSize: 16,
-    backgroundColor: "#fff",
-  },
-  button: {
-    alignItems: "center",
-    padding: 15,
-    backgroundColor: "#FF5722",
-    borderRadius: 5,
-  },
-  buttonLabel: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "500",
+    backgroundColor: '#fff',
   },
   buttonSubmit: {
     borderRadius: 8,
-    overflow: "hidden",
-    width: "100%",
+    overflow: 'hidden',
+    width: '100%',
     marginTop: 12,
+  },
+  button: {
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#FF5722',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 
