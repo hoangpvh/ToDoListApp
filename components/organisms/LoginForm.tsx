@@ -2,12 +2,13 @@ import FormField from "@/components/molecules/FormField";
 import Logo from "@/components/molecules/Logo";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import React, { useEffect, useState } from "react";
-import { Alert, Pressable, Text, StyleSheet, View } from "react-native";
+import { Alert, Pressable, Text, StyleSheet, View, ActivityIndicator } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(true);
   const router = useExpoRouter();
 
   useEffect(() => {
@@ -17,8 +18,8 @@ const LoginForm = () => {
         if (user) {
           router.push("todolist");
         }
-      } catch (error) {
-        console.error('Error retrieving data', error);
+      } catch (error) { } finally {
+        setLoading(false);
       }
     };
 
@@ -40,6 +41,14 @@ const LoginForm = () => {
 
     router.push("todolist");
   };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#FF5722" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
