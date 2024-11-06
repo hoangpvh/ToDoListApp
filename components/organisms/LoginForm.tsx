@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(true);  // Add loading state
+  const [loading, setLoading] = useState(true);
   const router = useExpoRouter();
 
   useEffect(() => {
@@ -18,10 +18,8 @@ const LoginForm = () => {
         if (user) {
           router.push("todolist");
         }
-      } catch (error) {
-        console.error('Error retrieving data', error);
-      } finally {
-        setLoading(false);  // Set loading to false once the check is done
+      } catch (error) { } finally {
+        setLoading(false);
       }
     };
 
@@ -47,7 +45,7 @@ const LoginForm = () => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#FF5722" />  {/* Display loading indicator */}
+        <ActivityIndicator size="large" color="#FF5722" />
       </View>
     );
   }
